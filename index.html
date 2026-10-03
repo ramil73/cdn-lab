@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Your page, one hop away | CDN Lab</title>
+    <style>
+      :root {
+        --blue: #1f2fb8;
+        --mint: #d9f4e8;
+        --sun: #ffc93c;
+        --ink: #101540;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Trebuchet MS", Verdana, sans-serif;
+        color: var(--ink);
+        background: var(--mint);
+        line-height: 1.6;
+      }
+      .hero {
+        background: var(--blue);
+        color: #fff;
+      }
+      .hero-inner {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 56px 24px;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 32px;
+        align-items: center;
+      }
+      h1 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(2.4rem, 6vw, 4rem);
+        line-height: 1.05;
+        margin: 0 0 16px;
+      }
+      .hero p {
+        font-size: 1.05rem;
+        max-width: 44ch;
+        margin: 0 0 24px;
+        color: #dfe3ff;
+      }
+      .badge {
+        display: inline-block;
+        background: var(--sun);
+        color: var(--ink);
+        font-weight: bold;
+        padding: 8px 16px;
+        border-radius: 999px;
+        font-size: 0.9rem;
+      }
+      .hero img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      main {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 40px 24px 64px;
+      }
+      .ticket {
+        background: #fff;
+        border-radius: 16px;
+        border-left: 10px solid var(--sun);
+        padding: 24px 28px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        box-shadow: 0 6px 0 var(--blue);
+        margin-bottom: 48px;
+      }
+      .ticket h2 {
+        margin: 0 0 4px;
+        font-size: 0.85rem;
+        color: var(--blue);
+      }
+      .ticket p {
+        margin: 0;
+        font-weight: bold;
+        word-break: break-word;
+      }
+      .steps-title {
+        font-family: Georgia, serif;
+        font-size: 1.7rem;
+        margin: 0 0 20px;
+      }
+      ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+        counter-reset: s;
+      }
+      li {
+        counter-increment: s;
+        background: var(--blue);
+        color: #fff;
+        border-radius: 16px;
+        padding: 22px;
+      }
+      li::before {
+        content: counter(s);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--sun);
+        color: var(--ink);
+        font-weight: bold;
+        margin-bottom: 12px;
+      }
+      li h3 {
+        margin: 0 0 6px;
+        font-size: 1.05rem;
+      }
+      li p {
+        margin: 0;
+        font-size: 0.92rem;
+        color: #dfe3ff;
+      }
+      .ua {
+        font-size: 0.8rem;
+        margin-top: 28px;
+        color: #3b4a6b;
+        word-break: break-word;
+      }
+      @media (max-width: 760px) {
+        .hero-inner {
+          grid-template-columns: 1fr;
+        }
+        .hero img {
+          max-width: 360px;
+          margin: 0 auto;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero-inner">
+        <div>
+          <h1>Your page, one hop away.</h1>
+          <p>
+            A CDN keeps copies of this site on edge servers around the world, so
+            visitors are served from a nearby node instead of one faraway
+            origin.
+          </p>
+          <span class="badge">CDN Verification Lab</span>
+        </div>
+        <img
+          src="image.svg"
+          alt="Globe showing an origin server sending content to four edge nodes"
+        />
+      </div>
+    </header>
+
+    <main>
+      <section class="ticket" aria-label="Deployment details">
+        <div>
+          <h2>Student</h2>
+          <p>Ramil C. Guerrero</p>
+        </div>
+        <div>
+          <h2>Student ID</h2>
+          <p>U2400841</p>
+        </div>
+        <div>
+          <h2>Timestamp</h2>
+          <p id="time"></p>
+        </div>
+        <div>
+          <h2>HTML received in</h2>
+          <p id="load">measuring...</p>
+        </div>
+      </section>
+
+      <h2 class="steps-title">How a visit travels</h2>
+      <ol>
+        <li>
+          <h3>Visitor asks</h3>
+          <p>
+            The browser requests this page and is routed to the nearest edge
+            node.
+          </p>
+        </li>
+        <li>
+          <h3>Cache hit</h3>
+          <p>
+            If the edge already has a copy, it answers immediately. No trip to
+            the origin.
+          </p>
+        </li>
+        <li>
+          <h3>Origin fetch</h3>
+          <p>
+            If not, the edge asks the origin once, replies, and keeps a copy for
+            the next visitor.
+          </p>
+        </li>
+      </ol>
+      <p class="ua" id="ua"></p>
+    </main>
+
+    <script>
+      function updateClock() {
+        document.getElementById("time").textContent =
+          new Date().toLocaleString("en-US", {
+            timeZone: "Asia/Manila",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true,
+          }) + " (Philippine Standard Time)";
+      }
+      updateClock();
+      setInterval(updateClock, 1000);
+      document.getElementById("ua").textContent =
+        "Browser: " + navigator.userAgent;
+      window.addEventListener("load", function () {
+        setTimeout(function () {
+          var n = performance.getEntriesByType("navigation")[0];
+          document.getElementById("load").textContent = n
+            ? Math.round(n.responseEnd - n.startTime) + " ms"
+            : "not available";
+        }, 0);
+      });
+    </script>
+  </body>
+</html>
